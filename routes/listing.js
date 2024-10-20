@@ -12,8 +12,14 @@ const upload = multer({ storage }) //here file in save in uploads folder
 //controllers
 const listingController = require("../controllers/listing.js")
 
-
 router.route("/")
+    .get(
+        wrapAsync(listingController.home))  //all listing, index route
+   
+
+
+
+router.route("/listings")
     .get(
         wrapAsync(listingController.index))  //all listing, index route
     .post(                                  //create new listing
@@ -29,7 +35,7 @@ router.route("/")
 
 //new route
 router.get(
-    "/new" , 
+    "/listings/new" , 
     isLoggedin,
 
     listingController.renderNewForm
@@ -40,7 +46,7 @@ router.get(
 
 
 
-router.route("/:id")
+router.route("/listings/:id")
     .get(              //show route
         wrapAsync(listingController.showListings)  
     )
@@ -65,7 +71,7 @@ router.route("/:id")
 
 
 //edit route
-router.get("/:id/edit", 
+router.get("/listings/:id/edit", 
     isOwner,
     isLoggedin,
      wrapAsync(listingController.renderEditForm)

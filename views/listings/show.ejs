@@ -45,7 +45,7 @@
     <br />
     <% if(currUser) { %>
     <hr />
-    <h4>Leave A review</h4>
+    <h4>Leave A Review</h4>
 
     <form
       action="/listings/<%=listing.id %>/reviews"
@@ -54,7 +54,7 @@
       class="needs-validation"
     >
       <div class="mb-3 mt-3">
-        <label for="rating" class="form-label">Ratting </label>
+        <label for="rating" class="form-label">Rating</label>
 
         <fieldset class="starability-slot">
           <input
@@ -105,8 +105,7 @@
       </div>
 
       <div class="mb-3 mt-3">
-        <label for="comment" class="form-label">Comment </label>
-
+        <label for="comment" class="form-label">Comment</label>
         <textarea
           name="review[comment]"
           id="comment"
@@ -117,41 +116,43 @@
         ></textarea>
 
         <div class="invalid-feedback">
-          please leave some comment before submiting
+          Please leave some comment before submitting
         </div>
       </div>
-      <button class="btn btn-outline-dark">submit</button>
+      <button class="btn btn-outline-dark">Submit</button>
     </form>
-
     <% } %>
 
     <br />
 
     <% if(listing.reviews.length > 0) { %>
 
-    <div class="row"></div>
-
-    <p><b>All reviews</b></p>
-
-    <% for(review of listing.reviews) { %>
-
-    <div class="card col-5 mb-3 ms-3">
-      <div class="card-body">
-        <h5 class="card-title">@<%=review.author.username %></h5>
-        <p class="card-text"><%= review.comment%></p>
-        <p class="starability-result" data-rating="<%= review.rating %>">
-          Rated: 3 stars
-        </p>
+    <hr />
+    <p><b>All Reviews</b></p>
+    
+    <!-- Start a row to align reviews -->
+    <div class="row">
+      <% for(review of listing.reviews) { %>
+      <div class="col-md-6 col-sm-12 mb-3"> <!-- Adjust column size as needed -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">@<%= review.author.username %></h5>
+            <p class="card-text"><%= review.comment %></p>
+            <p class="starability-result" data-rating="<%= review.rating %>">
+              Rated: <%= review.rating %> stars
+            </p>
+          </div>
+          <form
+            class="mb-3 ms-3"
+            method="POST"
+            action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+          >
+            <button class="btn btn-sm btn-dark">Delete Review</button>
+          </form>
+        </div>
       </div>
-      <form
-        class="mb-3 ms-3"
-        method="POST"
-        action="/listings/<%=listing._id %>/reviews/<%=review._id %>?_method=DELETE"
-      >
-        <button class="btn btn-sm btn-dark">Delete review</button>
-      </form>
+      <% } %>
     </div>
-  </div>
-  <% } %>
+    <% } %>
 </div>
-<% } %>
+
